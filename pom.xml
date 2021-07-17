@@ -7,7 +7,7 @@
     <groupId>cn.com.chiner</groupId>
     <artifactId>chiner-java</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>元数建模（siner)工具的后端处理模块</description>
+    <description>元数建模（chiner)工具的后端处理模块</description>
 
 
     <properties>
@@ -125,7 +125,7 @@
     </dependencies>
 
     <build>
-        <finalName>siner-java</finalName>
+        <finalName>chiner-java</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
