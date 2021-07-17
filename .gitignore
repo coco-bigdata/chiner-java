@@ -1,0 +1,16 @@
+!.gitignore
+
+# ===eclipse
+.project
+.classpath
+.settings/
+*/target/
+
+# Intellij
+.idea
+*.iml
+*/*.iml
+
+.DS_Store
+Thumbs.db
+.swp
