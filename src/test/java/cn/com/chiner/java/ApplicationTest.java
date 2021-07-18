@@ -89,12 +89,13 @@ public class ApplicationTest {
     public void genDocxTest(){
         String[] args =  new String[]{
                 "GenDocx",            //执行什么命令
-                "sinerFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/siner/业务配置及调查报告.sinoper.json",  //输入的PDMan文件
-                "docxTpl=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/tpl/siner-docx-tpl.docx",      //文档模板文件
-                "imgDir=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/images/smis",                         //图片文件存放目录
+//                "sinerFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/siner/业务配置及调查报告.sinoper.json",  //输入的PDMan文件
+                "sinerFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/siner/null-proj.chnr.json",  //输入的PDMan文件
+                "docxTpl=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/tpl/siner-docx-tpl.docx",      //文档模板文件
+                "imgDir=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/images/smis",                         //图片文件存放目录
                 "imgExt=.png",//图片文件后缀名
-                "outFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/siner-"+System.nanoTime()+".docx",
-                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/gendocx-"+System.nanoTime()+".json"
+                "outFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/siner-"+System.nanoTime()+".docx",
+                "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/gendocx-"+System.nanoTime()+".json"
         };
         Application.main(args);
     }

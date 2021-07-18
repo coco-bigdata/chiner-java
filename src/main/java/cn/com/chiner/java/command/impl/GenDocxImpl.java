@@ -75,7 +75,6 @@ public class GenDocxImpl implements Command<ExecResult> {
     protected void exec(String sinerFile, String docxTpl, String imgDir, String imgExt, String outFile,String out) throws IOException {
         File inDataFile = new File(sinerFile);
         File docTplFile = new File(docxTpl);
-        File imgDirFile = new File(imgDir);
         File outDocxFile = new File(outFile);
 
         String jsonText = parseFile(inDataFile);
@@ -97,6 +96,18 @@ public class GenDocxImpl implements Command<ExecResult> {
         List<View> views = JSONKit.jsonToBeanList(textViews,View.class);
         List<Dict> dicts = JSONKit.jsonToBeanList(textDicts,Dict.class);
         List<Diagram> diagrams = JSONKit.jsonToBeanList(textDiagrams,Diagram.class);
+        if(entities == null){
+            entities = new ArrayList<>();
+        }
+        if(views == null){
+            views = new ArrayList<>();
+        }
+        if(dicts == null){
+            dicts = new ArrayList<>();
+        }
+        if(diagrams == null){
+            diagrams = new ArrayList<>();
+        }
 
         List<Module> modules = new ArrayList<Module>();
         project = JSONKit.jsonToBean(jsonText,Project.class);
