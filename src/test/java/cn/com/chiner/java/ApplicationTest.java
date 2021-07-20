@@ -97,8 +97,8 @@ public class ApplicationTest {
                 "url=jdbc:postgresql://148.70.37.64:5432/test",
                 "username=test",
                 "password=123456",
-//                "tables=cust_base,cust_ent,cust_ind,cust_owner,cust_fnastat",
-                "tables=SIMS_CLASS,SIMS_STUDENT",
+//                "tables=SIMS_CLASS,SIMS_STUDENT",
+                "tables=SIMS_STUDENT",
                 "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"
         };
         Application.main(args);
