@@ -80,18 +80,10 @@ public class DBReverseGetTableDDLImpl extends AbstractDBCommand<ExecResult> {
             DatabaseMetaData meta = conn.getMetaData();
             DBType dbType = DBTypeKit.getDBType(meta);
             DBDialect dbDialect = DBDialectMatcher.getDBDialect(dbType);
-            String schemaPattern = dbDialect.getSchemaPattern(conn);
 
             for(String tableName : tableNameList){
-                ResultSet rs = meta.getTables(null, schemaPattern, tableName, new String[]{"TABLE"});
-                if(rs.next()){
-                    TableEntity tableEntity = dbDialect.createTableEntity(conn,rs);
-                    dbDialect.fillTableEntity(tableEntity,conn);
-                    tableEntities.add(tableEntity);
-                }
-                Statement stmt = rs.getStatement();
-                JdbcKit.close(stmt);
-                JdbcKit.close(rs);
+                TableEntity tableEntity = dbDialect.createTableEntity(conn,meta,tableName);
+                tableEntities.add(tableEntity);
             }
         } catch (SQLException e) {
             logger.error("读取表清单出错", e);

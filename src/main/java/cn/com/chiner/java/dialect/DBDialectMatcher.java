@@ -31,6 +31,7 @@ public class DBDialectMatcher {
     private static Map<DBType,DBDialect> dbTypeMap = new HashMap<DBType,DBDialect>(){{
         put(DBType.MYSQL,new DBDialectMySQL());
         put(DBType.ORACLE,new DBDialectOracle());
+        put(DBType.POSTGRESQL,new DBDialectPostgreSQL());
         put(DBType.DB2,new DBDialectDB2());
         put(DBType.DM,new DBDialectDM());
         put(DBType.SQL_SERVER,new DBDialectSQLServer());

@@ -86,6 +86,38 @@ public class ApplicationTest {
     }
 
     @Test
+    public void getTableDDL4PostgreSQLTest(){
+        String[] args =  new String[]{
+                "DBReverseGetTableDDL",            //执行什么命令
+//                "driver_class_name=com.mysql.cj.jdbc.Driver",
+//                "url=jdbc:mysql://127.0.0.1:3306/vbcms?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
+//                "username=fisok",
+//                "password=fisok2020",
+                "driver_class_name=org.postgresql.Driver",
+                "url=jdbc:postgresql://148.70.37.64:5432/test",
+                "username=test",
+                "password=123456",
+//                "tables=cust_base,cust_ent,cust_ind,cust_owner,cust_fnastat",
+                "tables=SIMS_CLASS,SIMS_STUDENT",
+                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"
+        };
+        Application.main(args);
+    }
+
+    @Test
+    public void listTable4PostgreSQLTest(){
+        String[] args =  new String[]{
+                "DBReverseGetAllTablesList",            //执行什么命令
+                "driver_class_name=org.postgresql.Driver",
+                "url=jdbc:postgresql://148.70.37.64:5432/test",
+                "username=test",
+                "password=123456",
+                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgatl-"+System.nanoTime()+".json"
+        };
+        Application.main(args);
+    }
+
+    @Test
     public void genDocxTest(){
         String[] args =  new String[]{
                 "GenDocx",            //执行什么命令
@@ -119,8 +151,8 @@ public class ApplicationTest {
         String[] args =  new String[]{
                 "ParsePDMFile",            //执行什么命令
 //                "pdmFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/pdm/AEMS.pdm",  //输入的PDMan文件
-                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/JEKI-WIKI文章模块.pdm",  //输入的PDMan文件
-//                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/数据字典.PDM",  //输入的PDMan文件
+//                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/JEKI-WIKI文章模块.pdm",  //输入的PDMan文件
+                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/数据字典.PDM",  //输入的PDMan文件
                 "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/import-pdm-"+System.nanoTime()+".json"
         };
         Application.main(args);

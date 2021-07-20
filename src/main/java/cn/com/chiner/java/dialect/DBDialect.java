@@ -290,4 +290,33 @@ public class DBDialect {
         }
         return tableEntities;
     }
+
+    /**
+     * 根据表名，创建数据表实体的字段及索引
+     * @param conn
+     * @param meta
+     * @param tableName
+     * @return
+     * @throws SQLException
+     */
+    public TableEntity createTableEntity(Connection conn,DatabaseMetaData meta,String tableName) throws SQLException {
+        ResultSet rs = null;
+        Statement stmt = null;
+        try{
+            rs = meta.getTables(null, getSchemaPattern(conn), tableName, new String[]{"TABLE"});
+            stmt = rs.getStatement();
+            if(rs.next()) {
+                TableEntity tableEntity = createTableEntity(conn, rs);
+                fillTableEntity(tableEntity,conn);
+                return tableEntity;
+            }
+        }catch (SQLException e){
+            throw e;
+        }finally {
+            JdbcKit.close(stmt);
+            JdbcKit.close(rs);
+        }
+        return null;
+    }
+
 }
