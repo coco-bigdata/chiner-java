@@ -61,7 +61,7 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
                 throw new IllegalStateException("文件"+pdmFile+"格式不正确");
             }
             FlyweightProcessingInstruction declearNode = (FlyweightProcessingInstruction)contentList.get(0);
-            String name = declearNode.getValue("Name");
+            String projectName = declearNode.getValue("Name");
             String version = declearNode.getValue("version");
             if(version.length()>3){
                 version = version.substring(0,4);
@@ -95,6 +95,7 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
             fillDomains(domainList,domains);
 
             ret.setBody(new HashMap<String,Object>(){{
+                put("projectName",projectName);
                 put("tables",tableEntities);
                 put("domains",domains);
             }});
