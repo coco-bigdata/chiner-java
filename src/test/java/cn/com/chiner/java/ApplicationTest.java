@@ -118,6 +118,25 @@ public class ApplicationTest {
     }
 
     @Test
+    public void getTableDDL4OracleTest(){
+        String[] args =  new String[]{
+                "DBReverseGetTableDDL",            //执行什么命令
+//                "driver_class_name=com.mysql.cj.jdbc.Driver",
+//                "url=jdbc:mysql://127.0.0.1:3306/vbcms?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
+//                "username=fisok",
+//                "password=fisok2020",
+                "driver_class_name=oracle.jdbc.driver.OracleDriver",
+                "url=jdbc:oracle:thin:@g5.mtain.top:30003:ORCL",
+                "username=UCREDIT",
+                "password=pNhpE8hn",
+//                "tables=SIMS_CLASS,SIMS_STUDENT",
+                "tables=SIMS_STUDENT",
+                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"
+        };
+        Application.main(args);
+    }
+
+    @Test
     public void genDocxTest(){
         String[] args =  new String[]{
                 "GenDocx",            //执行什么命令

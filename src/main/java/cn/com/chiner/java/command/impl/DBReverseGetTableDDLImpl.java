@@ -83,6 +83,7 @@ public class DBReverseGetTableDDLImpl extends AbstractDBCommand<ExecResult> {
 
             for(String tableName : tableNameList){
                 TableEntity tableEntity = dbDialect.createTableEntity(conn,meta,tableName);
+                tableEntity.fillFieldsCalcValue();
                 tableEntities.add(tableEntity);
             }
         } catch (SQLException e) {

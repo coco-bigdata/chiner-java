@@ -130,16 +130,16 @@ public class DBDialect {
         String tableName = tableEntity.getDefKey();
 
         ResultSet rs = null;
-        Statement stmt = null;
+//        Statement stmt = null;
         ResultSet pkRs = null;
-        Statement pkStmt = null;
+//        Statement pkStmt = null;
 
         try {
             Pair<ResultSet,ResultSet> pair = getColumnAndPrimaryKeyResultSetPair(conn,tableName);
             rs = pair.getLeft();
             pkRs = pair.getRight();
-            stmt = rs.getStatement();
-            pkStmt = pkRs.getStatement();
+//            stmt = rs.getStatement();
+//            pkStmt = pkRs.getStatement();
             Set<String> pkSet = new HashSet<String>();
             while(pkRs.next()){
                 String columnName = pkRs.getString("COLUMN_NAME");
@@ -156,9 +156,9 @@ public class DBDialect {
             logger.error("读取数据表"+tableName+"的字段明细出错",e);
             throw new RuntimeException("读取数据表"+tableName+"的字段明细出错",e);
         } finally {
-            JdbcKit.close(stmt);
+//            JdbcKit.close(stmt);
             JdbcKit.close(rs);
-            JdbcKit.close(pkStmt);
+//            JdbcKit.close(pkStmt);
             JdbcKit.close(pkRs);
         }
     }
@@ -217,23 +217,11 @@ public class DBDialect {
         int dataType = rs.getInt("DATA_TYPE");
         int columnSize = rs.getInt("COLUMN_SIZE");
         Integer decimalDigits = rs.getInt("DECIMAL_DIGITS");
+        String defaultValue = rs.getString("COLUMN_DEF");
         String isNullable = rs.getString("IS_NULLABLE");
         String isAutoincrement = rs.getString("IS_AUTOINCREMENT");
-        String defaultValue = rs.getString("COLUMN_DEF");
-        if(StringKit.isNotBlank(defaultValue)){
-            if(defaultValue.indexOf("'::") > 0){
-                defaultValue = defaultValue.substring(0,defaultValue.indexOf("'::")+1);
-            }
-            //如果是被''圈住，说明是字串，不需要处理
-            if(defaultValue.startsWith("'") && defaultValue.endsWith("'")){
-            }else{
-                //如果全是数字，并且不以0开始,那么就是数字，不需要加双单引号
-                if(defaultValue.matches("[0-9]+") && !defaultValue.startsWith("0")){
-                }else{
-                    defaultValue = "'"+defaultValue+"'";
-                }
-            }
-        }
+        defaultValue = parseDefaultValue(defaultValue);
+
 
         String label = remarks;
         String comment = null;
@@ -258,6 +246,24 @@ public class DBDialect {
         field.setNotNull(!"YES".equalsIgnoreCase(isNullable));
         field.setAutoIncrement(!"NO".equalsIgnoreCase(isAutoincrement));
         field.setDefaultValue(defaultValue);
+    }
+
+    public String parseDefaultValue(String defaultValue){
+        if(StringKit.isNotBlank(defaultValue)){
+            if(defaultValue.indexOf("'::") > 0){
+                defaultValue = defaultValue.substring(0,defaultValue.indexOf("'::")+1);
+            }
+            //如果是被''圈住，说明是字串，不需要处理
+            if(defaultValue.startsWith("'") && defaultValue.endsWith("'")){
+            }else{
+                //如果全是数字，并且不以0开始,那么就是数字，不需要加双单引号
+                if(defaultValue.matches("[0-9]+") && !defaultValue.startsWith("0")){
+                }else{
+                    defaultValue = "'"+defaultValue+"'";
+                }
+            }
+        }
+        return defaultValue;
     }
 
     /**
