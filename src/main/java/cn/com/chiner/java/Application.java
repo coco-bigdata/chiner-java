@@ -16,6 +16,7 @@
 package cn.com.chiner.java;
 
 import cn.com.chiner.java.command.Command;
+import cn.com.chiner.java.command.ExecResult;
 import cn.com.chiner.java.command.impl.*;
 import cn.fisok.raw.kit.DateKit;
 import cn.fisok.raw.kit.FileKit;
@@ -51,13 +52,14 @@ public class Application {
      * driver_class_name=com.mysql.jdbc.Driver
      * url=jdbc:mysql://127.0.0.1:3306/vbcms?useUnicode=true&characterEncoding=UTF-8&useSSL=false
      * 转换为KV的Map结构中去
+     *
      * @param argList
      * @return
      */
     public static Map<String, String> parseArgs(List<String> argList) {
         Map argsMap = new HashMap();
         argList.forEach(x -> {
-            x = x.replace("\"","").replace("\'","");
+            x = x.replace("\"", "").replace("\'", "");
             int idx = x.indexOf("=");
             if (idx > 0) {
                 String key = x.substring(0, idx);
@@ -71,24 +73,25 @@ public class Application {
 
     /**
      * 如果日志文件目录不存在，创建该目录
+     *
      * @throws IOException
      */
     public static void touchLogHomeDirectory() throws IOException {
         String userHome = System.getProperties().getProperty("user.home");
-        List<String> fileParts = new ArrayList<String>(){{
-           add(userHome);
-           add(File.separator);
-           add("logs");
-           add(File.separator);
-           add("siner");
-           add(File.separator);
-           add("touch-test-");
-           add(System.currentTimeMillis()+"");
-           add(".txt");
+        List<String> fileParts = new ArrayList<String>() {{
+            add(userHome);
+            add(File.separator);
+            add("logs");
+            add(File.separator);
+            add("siner");
+            add(File.separator);
+            add("touch-test-");
+            add(System.currentTimeMillis() + "");
+            add(".txt");
         }};
         String filePath = StringKit.join(fileParts);
         File file = new File(filePath);
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.createNewFile();
         }
         System.setErr(new PrintStream(new FileOutputStream(file)));
@@ -96,19 +99,20 @@ public class Application {
 
     /**
      * 把文本输出
+     *
      * @param outFileFullPath
      * @param text
      * @throws IOException
      */
-    public static void sendTextOut(String outFileFullPath,String text) throws IOException {
+    public static void sendTextOut(String outFileFullPath, String text) {
         Date curDate = DateKit.now();
         File parentDirectory = new File(outFileFullPath).getParentFile();
-        if(parentDirectory.isDirectory()){
-            if(parentDirectory.exists()){
+        if (parentDirectory.isDirectory()) {
+            if (parentDirectory.exists()) {
                 File[] files = parentDirectory.listFiles();
-                for(File file : files){
+                for (File file : files) {
                     Date lastModified = new Date(file.lastModified());
-                    int seconds = DateKit.getRangeSeconds(lastModified,curDate);
+                    int seconds = DateKit.getRangeSeconds(lastModified, curDate);
                     //一个小时之前的文件，则删除他
 //                    if(seconds>3600){
 //                        if(file.isDirectory()){
@@ -121,12 +125,18 @@ public class Application {
             }
         }
 
-        File outFile = FileKit.touchFile(new File(outFileFullPath),true);
-        FileKit.write(outFile,text,"UTF-8");
+        File outFile = null;
+        try {
+            outFile = FileKit.touchFile(new File(outFileFullPath), true);
+            FileKit.write(outFile, text, "UTF-8");
+        } catch (IOException e) {
+            logger.error("写结果文件出错",e);
+        }
     }
 
     /**
      * 命令执行入口
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -146,48 +156,55 @@ public class Application {
             argList.add(args[i]);
         }
         Map<String, String> argsMap = parseArgs(argList);
-
-        //3. 检查命令的合法性
-        Class<?> cmdClass = commandRegister.get(cmdText);
-        if (cmdClass == null) {
-            String msg = "Command [" + cmdText + "] Not Supported.";
-            logger.error(msg);
-            throw new RuntimeException(msg);
-        }
         String outFileFullPath = argsMap.get("out");
-        if(StringKit.isBlank(outFileFullPath)){
-            String msg = "Parameter [out] for the command ["+cmdText+"] does not exist.";
-            logger.error(msg);
-            throw new RuntimeException(msg);
-        }
-
-        //4. 输出执行的命令信息
-        logger.info("------------------------------------>>>[执行命令]<<<-------------------------------------");
-        logger.info(cmdText + " " + StringKit.join(argList, " "));
-        logger.info("----------------------------------------------------------------------------------------");
-
-        //5. 执行命令
+        ExecResult ret = new ExecResult(ExecResult.FAILED,"未知错误");
         try {
-            Command<?> cmd = (Command<?>) cmdClass.newInstance();
-            Object ret = cmd.exec(argsMap);
-            String retText = "";
-
-            if (ret instanceof String) {
-                retText = (String) ret;
-            } else if (ret instanceof Number) {
-                retText = ((Number) ret).toString();
-            } else {
-                retText = JSONKit.toJsonString(ret,true);
+            //3. 检查命令的合法性
+            Class<?> cmdClass = commandRegister.get(cmdText);
+            if (cmdClass == null) {
+                String msg = "Command [" + cmdText + "] Not Supported.";
+                logger.error(msg);
+                throw new RuntimeException(msg);
             }
-            logger.info(retText);
 
-            sendTextOut(outFileFullPath,retText);
+            if (StringKit.isBlank(outFileFullPath)) {
+                String msg = "Parameter [out] for the command [" + cmdText + "] does not exist.";
+                logger.error(msg);
+                throw new RuntimeException(msg);
+            }
+
+            //4. 输出执行的命令信息
+            logger.info("------------------------------------>>>[执行命令]<<<-------------------------------------");
+            logger.info(cmdText + " " + StringKit.join(argList, " "));
+            logger.info("----------------------------------------------------------------------------------------");
+
+            //5. 执行命令
+
+            Command<?> cmd = (Command<?>) cmdClass.newInstance();
+            ret = (ExecResult)cmd.exec(argsMap);
+//            String retText = "";
+//            if (ret instanceof String) {
+//                retText = (String) ret;
+//            } else if (ret instanceof Number) {
+//                retText = ((Number) ret).toString();
+//            } else {
+//                retText = JSONKit.toJsonString(ret, true);
+//            }
+            String jsonText = JSONKit.toJsonString(ret, true);
+            logger.info(jsonText);
+
         } catch (InstantiationException e) {
-            logger.error("执行命令异常",e);
+            logger.error("执行命令异常", e);
+            ret.setBody("执行命令异常!\n"+e.getMessage());
         } catch (IllegalAccessException e) {
-            logger.error("执行命令异常",e);
+            logger.error("执行命令异常", e);
+            ret.setBody("执行命令异常!\n"+e.getMessage());
         } catch (Exception e) {
-            logger.error("未知的错误",e);
+            logger.error("未知的错误", e);
+            ret.setBody("未知的错误!\n"+e.getMessage());
+        } finally {
+            String jsonText = JSONKit.toJsonString(ret, true);
+            sendTextOut(outFileFullPath, jsonText);
         }
     }
 

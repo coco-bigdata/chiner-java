@@ -31,6 +31,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.dom4j.tree.FlyweightProcessingInstruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +56,21 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
         ExecResult ret = new ExecResult();
         try {
             Document document = reader.read(inFile);
+            List<Node> contentList = document.content();
+            if(contentList == null || contentList.size() == 0){
+                throw new IllegalStateException("文件"+pdmFile+"格式不正确");
+            }
+            FlyweightProcessingInstruction declearNode = (FlyweightProcessingInstruction)contentList.get(0);
+            String name = declearNode.getValue("Name");
+            String version = declearNode.getValue("version");
+            if(version.length()>3){
+                version = version.substring(0,4);
+            }
+            //低于16.5版本
+            if(version.compareTo("16.5") < 0){
+                throw new IllegalStateException("文件["+pdmFile+"]版本为["+version+"],不正确，请使用PowerDesigner-16.5以上版本的结果文件，如果没有，请你先用16.5的打开旧文件后另存为。");
+            }
+
 
             List<Node> domainNodeList = document.selectNodes("/Model/o:RootObject/c:Children/o:Model/c:Domains/o:PhysicalDomain");
             List<Node> tableNodeList = document.selectNodes("/Model/o:RootObject/c:Children/o:Model/c:Tables/o:Table");

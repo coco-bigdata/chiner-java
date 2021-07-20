@@ -118,9 +118,10 @@ public class ApplicationTest {
     public void parsePDMFileTest(){
         String[] args =  new String[]{
                 "ParsePDMFile",            //执行什么命令
-                "pdmFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/pdm/AEMS.pdm",  //输入的PDMan文件
-//                "pdmFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/pdm/数据字典.PDM",  //输入的PDMan文件
-                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/import-pdm-"+System.nanoTime()+".json"
+//                "pdmFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/pdm/AEMS.pdm",  //输入的PDMan文件
+                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/JEKI-WIKI文章模块.pdm",  //输入的PDMan文件
+//                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/数据字典.PDM",  //输入的PDMan文件
+                "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/import-pdm-"+System.nanoTime()+".json"
         };
         Application.main(args);
     }
