@@ -27,24 +27,24 @@ import java.sql.*;
  * @desc : PostgreSQL方言
  */
 public class DBDialectPostgreSQL extends DBDialect {
-    @Override
-    public TableEntity createTableEntity(Connection conn, DatabaseMetaData meta, String tableName) throws SQLException {
-        ResultSet rs = null;
-        Statement stmt = null;
-        try{
-            rs = meta.getTables(null, getSchemaPattern(conn), tableName.toLowerCase(), new String[]{"TABLE"});
-            stmt = rs.getStatement();
-            if(rs.next()) {
-                TableEntity tableEntity = createTableEntity(conn, rs);
-                fillTableEntity(tableEntity,conn);
-                return tableEntity;
-            }
-        }catch (SQLException e){
-            throw e;
-        }finally {
-            JdbcKit.close(stmt);
-            JdbcKit.close(rs);
-        }
-        return null;
-    }
+//    @Override
+//    public TableEntity createTableEntity(Connection conn, DatabaseMetaData meta, String tableName) throws SQLException {
+//        ResultSet rs = null;
+//        Statement stmt = null;
+//        try{
+//            rs = meta.getTables(null, getSchemaPattern(conn), tableName.toLowerCase(), new String[]{"TABLE"});
+//            stmt = rs.getStatement();
+//            if(rs.next()) {
+//                TableEntity tableEntity = createTableEntity(conn, rs);
+//                fillTableEntity(tableEntity,conn);
+//                return tableEntity;
+//            }
+//        }catch (SQLException e){
+//            throw e;
+//        }finally {
+//            JdbcKit.close(stmt);
+//            JdbcKit.close(rs);
+//        }
+//        return null;
+//    }
 }

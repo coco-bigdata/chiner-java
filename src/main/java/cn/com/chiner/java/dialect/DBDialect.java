@@ -361,19 +361,25 @@ public class DBDialect {
      */
     public TableEntity createTableEntity(Connection conn,DatabaseMetaData meta,String tableName) throws SQLException {
         ResultSet rs = null;
-        Statement stmt = null;
         try{
-            rs = meta.getTables(null, getSchemaPattern(conn), tableName, new String[]{"TABLE"});
-            stmt = rs.getStatement();
+            rs = meta.getTables(null, getSchemaPattern(conn), tableName.toLowerCase(), new String[]{"TABLE"});
             if(rs.next()) {
                 TableEntity tableEntity = createTableEntity(conn, rs);
                 fillTableEntity(tableEntity,conn);
+                JdbcKit.close(rs);
                 return tableEntity;
+            }else{
+                //如果全小写不行，就来试试全大写
+                rs = meta.getTables(null, getSchemaPattern(conn), tableName.toUpperCase(), new String[]{"TABLE"});
+                if(rs.next()) {
+                    TableEntity tableEntity = createTableEntity(conn, rs);
+                    fillTableEntity(tableEntity,conn);
+                    return tableEntity;
+                }
             }
         }catch (SQLException e){
             throw e;
         }finally {
-            JdbcKit.close(stmt);
             JdbcKit.close(rs);
         }
         return null;
