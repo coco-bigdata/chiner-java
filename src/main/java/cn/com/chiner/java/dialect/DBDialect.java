@@ -365,7 +365,7 @@ public class DBDialect {
         try{
             String schemaPattern = getSchemaPattern(conn);
 //            String schemaPattern = "jence_user";
-            rs = meta.getTables(null, schemaPattern, tableName.toLowerCase()+"%", new String[]{"TABLE"});
+            rs = meta.getTables(null, schemaPattern, tableName.toLowerCase(), new String[]{"TABLE"});
             if(rs.next()) {
                 TableEntity tableEntity = createTableEntity(conn, rs);
                 fillTableEntity(tableEntity,conn);
@@ -373,7 +373,7 @@ public class DBDialect {
                 return tableEntity;
             }else{
                 //如果全小写不行，就来试试全大写
-                rs = meta.getTables(null, schemaPattern, tableName.toUpperCase()+"%", new String[]{"TABLE"});
+                rs = meta.getTables(null, schemaPattern, tableName.toUpperCase(), new String[]{"TABLE"});
                 if(rs.next()) {
                     TableEntity tableEntity = createTableEntity(conn, rs);
                     fillTableEntity(tableEntity,conn);
