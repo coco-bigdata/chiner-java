@@ -108,7 +108,8 @@ public class ApplicationTest {
                 "url=jdbc:db2://47.107.253.194:50000/ams5:progressiveStreaming=2;",
                 "username=db2inst1",
                 "password=db2inst1",
-                "tables=smis_class,smis_student",
+//                "tables=smis_class,smis_student",
+                "tables=SIMS_CLASS,SIMS_STUDENT",
                 "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"        };
         Application.main(args);
     }
@@ -181,7 +182,7 @@ public class ApplicationTest {
                 "username=UCREDIT",
                 "password=pNhpE8hn",
 //                "tables=SIMS_CLASS,SIMS_STUDENT",
-                "tables=SIMS_STUDENT",
+                "tables=SIMS_CLASS,SIMS_STUDENT",
                 "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"
         };
         Application.main(args);

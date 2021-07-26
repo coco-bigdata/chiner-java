@@ -16,8 +16,12 @@
 package cn.com.chiner.java.dialect.impl;
 
 import cn.com.chiner.java.dialect.DBDialect;
+import cn.com.chiner.java.model.TableEntity;
+import cn.fisok.raw.kit.JdbcKit;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -29,9 +33,11 @@ public class DBDialectDB2 extends DBDialect {
     public String getSchemaPattern(Connection conn) throws SQLException {
         return conn.getMetaData().getUserName().toUpperCase();
 //        return "jence_user";
+//        return null;
     }
 
     public String getTableNamePattern(Connection conn) throws SQLException {
         return "%";
     }
+
 }
