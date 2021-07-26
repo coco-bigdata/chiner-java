@@ -101,6 +101,19 @@ public class ApplicationTest {
     }
 
     @Test
+    public void getTableDB2DDLTest(){
+        String[] args =  new String[]{
+                "DBReverseGetTableDDL",                      //执行什么命令
+                "driver_class_name=com.ibm.db2.jcc.DB2Driver",
+                "url=jdbc:db2://47.107.253.194:50000/ams5:progressiveStreaming=2;",
+                "username=db2inst1",
+                "password=db2inst1",
+                "tables=smis_class,smis_student",
+                "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/dbrgtddl-"+System.nanoTime()+".json"        };
+        Application.main(args);
+    }
+
+    @Test
     public void getTableDDL4SQLServerTest(){
         String[] args =  new String[]{
                 "DBReverseGetTableDDL",            //执行什么命令

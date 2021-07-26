@@ -106,7 +106,6 @@ public class DBDialect {
     public void fillTableEntityNoColumn(TableEntity tableEntity, Connection connection,ResultSet rs) throws SQLException {
         String tableName = rs.getString("TABLE_NAME");
         String remarks = StringKit.trim(rs.getString("REMARKS"));
-        String name = StringKit.trim(rs.getString("NAME"));
         String defKey = tableName;
         String defName = remarks;
         String comment = "";
@@ -326,8 +325,8 @@ public class DBDialect {
     public List<TableEntity> getAllTables(Connection conn) throws SQLException {
         DatabaseMetaData meta = conn.getMetaData();
 
-//        String schemaPattern = getSchemaPattern(conn);
-        String schemaPattern = null;
+//        String schemaPattern = null;
+        String schemaPattern = getSchemaPattern(conn);
         String tableNamePattern = getTableNamePattern(conn);
         String catalog = conn.getCatalog();
 
@@ -364,7 +363,9 @@ public class DBDialect {
     public TableEntity createTableEntity(Connection conn,DatabaseMetaData meta,String tableName) throws SQLException {
         ResultSet rs = null;
         try{
-            rs = meta.getTables(null, getSchemaPattern(conn), tableName.toLowerCase(), new String[]{"TABLE"});
+            String schemaPattern = getSchemaPattern(conn);
+//            String schemaPattern = "jence_user";
+            rs = meta.getTables(null, schemaPattern, tableName.toLowerCase()+"%", new String[]{"TABLE"});
             if(rs.next()) {
                 TableEntity tableEntity = createTableEntity(conn, rs);
                 fillTableEntity(tableEntity,conn);
@@ -372,7 +373,7 @@ public class DBDialect {
                 return tableEntity;
             }else{
                 //如果全小写不行，就来试试全大写
-                rs = meta.getTables(null, getSchemaPattern(conn), tableName.toUpperCase(), new String[]{"TABLE"});
+                rs = meta.getTables(null, schemaPattern, tableName.toUpperCase()+"%", new String[]{"TABLE"});
                 if(rs.next()) {
                     TableEntity tableEntity = createTableEntity(conn, rs);
                     fillTableEntity(tableEntity,conn);
