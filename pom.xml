@@ -13,6 +13,8 @@
     <properties>
         <junit.version>4.12</junit.version>
         <jackson.version>2.9.6</jackson.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -37,6 +39,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.23</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.db2</groupId>
+            <artifactId>jcc</artifactId>
+            <version>11.5.5.0</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -131,8 +138,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <compilerVersion>${maven.compiler.target}</compilerVersion>
                 </configuration>
             </plugin>
 

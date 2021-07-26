@@ -2,7 +2,7 @@
     <!-- 设置 logger context 名称,一旦设置不可改变，默认为default -->
     <contextName>SINER-JAVA</contextName>
     <!-- 定义日志文件名称,与工程名一致 -->
-    <property name="APP_NAME" value="siner" />
+    <property name="APP_NAME" value="chiner" />
     <!-- 定义日志的根目录  可以手动指定绝对路径  如：<property name="LOG_HOME" value="绝对路径(用正斜杠代替反斜杠或者双反斜杠来分隔目录级次)" /> -->
     <!--也可以用define标签自己在代码中动态指定根目录，LogHomeProperty类后面附上 -->
     <define name="LOG_HOME" class="cn.com.chiner.java.log.LogHomeProperty" />

@@ -38,6 +38,19 @@ public class ApplicationTest {
     }
 
     @Test
+    public void pingDB2DriverLoadTest(){
+        String[] args =  new String[]{
+                "PingLoadDriverClass",                      //执行什么命令
+                "driver_class_name=com.ibm.db2.jcc.DB2Driver",
+                "url=jdbc:db2://47.107.253.194:50000/ams5:progressiveStreaming=2;",
+                "username=db2inst1",
+                "password=db2inst1",
+                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/pdc-"+System.nanoTime()+".json"
+        };
+        Application.main(args);
+    }
+
+    @Test
     public void listTableTest(){
         String[] args =  new String[]{
                 "DBReverseGetAllTablesList",            //执行什么命令
@@ -153,7 +166,7 @@ public class ApplicationTest {
         String[] args =  new String[]{
                 "GenDocx",            //执行什么命令
 //                "sinerFile=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/siner/业务配置及调查报告.sinoper.json",  //输入的PDMan文件
-                "sinerFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/siner/null-proj.chnr.json",  //输入的PDMan文件
+                "sinerFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/siner/营销战情中心.chnr.json",  //输入的PDMan文件
                 "docxTpl=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/tpl/siner-docx-tpl.docx",      //文档模板文件
                 "imgDir=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/images/smis",                         //图片文件存放目录
                 "imgExt=.png",//图片文件后缀名
@@ -181,7 +194,7 @@ public class ApplicationTest {
     public void parsePDMFileTest(){
         String[] args =  new String[]{
                 "ParsePDMFile",            //执行什么命令
-                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/AEMS.pdm",  //输入的PDMan文件
+                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/通用组件模型汇总(1).pdm",  //输入的PDMan文件
 //                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/JEKI-WIKI文章模块.pdm",  //输入的PDMan文件
 //                "pdmFile=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/pdm/数据字典.PDM",  //输入的PDMan文件
                 "out=/Users/asher/workspace/ws-vekai/chiner-java/src/test/resources/out/import-pdm-"+System.nanoTime()+".json"

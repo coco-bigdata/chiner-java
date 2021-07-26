@@ -79,10 +79,16 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
             List<PDDomain> domainList = new ArrayList<>();
             for(Node domainNode : domainNodeList){
                 PDDomain domain = createDomain(domainNode);
+                if(domain == null){
+                    continue;
+                }
                 domainList.add(domain);
             }
             for(Node tableNode : tableNodeList){
                 PDTable table = createTable(tableNode,domainList);
+                if(table == null){
+                    continue;
+                }
                 tableList.add(table);
             }
 
@@ -206,13 +212,16 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
     public PDTable createTable(Node node, List<PDDomain> domains){
         String id = getAttributeValue(node,"Id");
         String objectId = getChildNodeValue(node,"a:ObjectID").strValue();
-        String name = getChildNodeValue(node,"a:Name").strValue();
-        String code = getChildNodeValue(node,"a:Code").strValue();
-        String comment = getChildNodeValue(node,"a:Comment").strValue();
+        String name = getChildNodeValue(node,"a:Name").strValue("");
+        String code = getChildNodeValue(node,"a:Code").strValue("");
+        String comment = getChildNodeValue(node,"a:Comment").strValue("");
         Date creationDate = getChildNodeValue(node,"a:CreationDate").dateValue();
         String creator = getChildNodeValue(node,"a:Creator").strValue();
         Date modificationDate = getChildNodeValue(node,"a:ModificationDate").dateValue();
         String modifier = getChildNodeValue(node,"a:Modifier").strValue();
+        if(StringKit.isBlank(code) && StringKit.isBlank(name)){
+            return null;
+        }
 
         PDTable table = new PDTable();
         table.setId(id);
@@ -237,6 +246,9 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
         List<Node> columnNodeList = node.selectNodes("c:Columns/o:Column");
         for(Node columnNode : columnNodeList){
             PDColumn column = createColumn(columnNode);
+            if(column == null){
+                continue;
+            }
             table.getColumns().add(column);
             //处理关联的数据域
             Node domainNode = columnNode.selectSingleNode("c:Domain/o:PhysicalDomain");
@@ -255,12 +267,16 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
         for(Node keyNode : keyNodeList){
             String keyId = getAttributeValue(keyNode,"Id");
             String keyObjectId = getChildNodeValue(keyNode,"a:ObjectID").strValue();
-            String keyName = getChildNodeValue(keyNode,"a:Name").strValue();
-            String keyCode = getChildNodeValue(keyNode,"a:Code").strValue();
+            String keyName = getChildNodeValue(keyNode,"a:Name").strValue("");
+            String keyCode = getChildNodeValue(keyNode,"a:Code").strValue("");
             Date keyCreationDate = getChildNodeValue(keyNode,"a:CreationDate").dateValue();
             String keyCreator = getChildNodeValue(keyNode,"a:Creator").strValue();
             Date keyModificationDate = getChildNodeValue(keyNode,"a:ModificationDate").dateValue();
             String keyModifier = getChildNodeValue(keyNode,"a:Modifier").strValue();
+            if(StringKit.isBlank(code) && StringKit.isBlank(name)){
+                continue;
+            }
+
             PDKey key = new PDKey();
             key.setId(keyId);
             key.setObjectID(keyObjectId);
@@ -303,16 +319,20 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
     public PDColumn createColumn(Node node){
         String id = getAttributeValue(node,"Id");
         String objectId = getChildNodeValue(node,"a:ObjectID").strValue();
-        String code = getChildNodeValue(node,"a:Code").strValue();
-        String name = getChildNodeValue(node,"a:Name").strValue();
-        String comment = getChildNodeValue(node,"a:Comment").strValue();
+        String code = getChildNodeValue(node,"a:Code").strValue("");
+        String name = getChildNodeValue(node,"a:Name").strValue("");
+        String comment = getChildNodeValue(node,"a:Comment").strValue("");
         Date creationDate = getChildNodeValue(node,"a:CreationDate").dateValue();
         String creator = getChildNodeValue(node,"a:Creator").strValue();
         Date modificationDate = getChildNodeValue(node,"a:ModificationDate").dateValue();
         String modifier = getChildNodeValue(node,"a:Modifier").strValue();
-        String dataType = getChildNodeValue(node,"a:DataType").strValue();
+        String dataType = getChildNodeValue(node,"a:DataType").strValue("");
         Integer length = getChildNodeValue(node,"a:Length").intValue();
         Integer precision = getChildNodeValue(node,"a:Precision").intValue();
+        if(StringKit.isBlank(code) && StringKit.isBlank(name)){
+            return null;
+        }
+
 
         PDColumn column = new PDColumn();
         column.setId(id);
@@ -351,6 +371,9 @@ public class ParsePDMFileImpl implements Command<ExecResult> {
         String dataType = getChildNodeValue(node,"a:DataType").strValue();
         Integer length = getChildNodeValue(node,"a:Length").intValue();
         Integer precision = getChildNodeValue(node,"a:Precision").intValue();
+        if(StringKit.isBlank(code) && StringKit.isBlank(name)){
+            return null;
+        }
 
         PDDomain domain = new PDDomain();
         domain.setId(id);
