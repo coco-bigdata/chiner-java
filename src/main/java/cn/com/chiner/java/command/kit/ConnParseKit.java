@@ -34,7 +34,7 @@ public abstract class ConnParseKit {
      * @return Left为字段名，Right为字段注释
      */
     public static Pair parseNameAndComment(String remarks) {
-        String[] delimters = new String[]{" ", ",","，",";","-", "\t","\n","("};
+        String[] delimters = new String[]{"(","（"," ", ",","，",";","-", "\t","\n"};
         Pair<String, String> pair = null;
         for (int i = 0; i < delimters.length; i++) {
             String delimter = delimters[i];

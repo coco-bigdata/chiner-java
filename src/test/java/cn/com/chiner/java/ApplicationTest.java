@@ -68,6 +68,19 @@ public class ApplicationTest {
     }
 
     @Test
+    public void listTable4DB2Test(){
+        String[] args =  new String[]{
+                "DBReverseGetAllTablesList",                      //执行什么命令
+                "driver_class_name=com.ibm.db2.jcc.DB2Driver",
+                "url=jdbc:db2://47.107.253.194:50000/ams5:progressiveStreaming=2;",
+                "username=db2inst1",
+                "password=db2inst1",
+                "out=/Users/asher/workspace/ws-vekai/siner-java/src/test/resources/out/dbrgatl-"+System.nanoTime()+".json"
+        };
+        Application.main(args);
+    }
+
+    @Test
     public void getTableDDLTest(){
         String[] args =  new String[]{
                 "DBReverseGetTableDDL",            //执行什么命令

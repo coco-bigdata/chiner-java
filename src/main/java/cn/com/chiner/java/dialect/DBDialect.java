@@ -106,6 +106,7 @@ public class DBDialect {
     public void fillTableEntityNoColumn(TableEntity tableEntity, Connection connection,ResultSet rs) throws SQLException {
         String tableName = rs.getString("TABLE_NAME");
         String remarks = StringKit.trim(rs.getString("REMARKS"));
+        String name = StringKit.trim(rs.getString("NAME"));
         String defKey = tableName;
         String defName = remarks;
         String comment = "";
@@ -219,7 +220,7 @@ public class DBDialect {
         Integer decimalDigits = rs.getInt("DECIMAL_DIGITS");
         String defaultValue = rs.getString("COLUMN_DEF");
         String isNullable = rs.getString("IS_NULLABLE");
-        String isAutoincrement = rs.getString("IS_AUTOINCREMENT");
+        String isAutoincrement = "NO";
         defaultValue = parseDefaultValue(defaultValue);
 
 
@@ -325,7 +326,8 @@ public class DBDialect {
     public List<TableEntity> getAllTables(Connection conn) throws SQLException {
         DatabaseMetaData meta = conn.getMetaData();
 
-        String schemaPattern = getSchemaPattern(conn);
+//        String schemaPattern = getSchemaPattern(conn);
+        String schemaPattern = null;
         String tableNamePattern = getTableNamePattern(conn);
         String catalog = conn.getCatalog();
 

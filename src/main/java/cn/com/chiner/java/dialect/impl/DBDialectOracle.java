@@ -41,41 +41,5 @@ public class DBDialectOracle extends DBDialect {
         return schemaPattern;
     }
 
-    public void fillColumnField(ColumnField field, Connection conn, ResultSet rs, Set<String> pkSet) throws SQLException {
-        String colName = rs.getString("COLUMN_NAME");
-        String remarks = StringKit.trim(rs.getString("REMARKS"));
-        String typeName = rs.getString("TYPE_NAME");
-        int dataType = rs.getInt("DATA_TYPE");
-        int columnSize = rs.getInt("COLUMN_SIZE");
-        Integer decimalDigits = rs.getInt("DECIMAL_DIGITS");
-        String defaultValue = rs.getString("COLUMN_DEF");
-        String isNullable = rs.getString("IS_NULLABLE");
-        String isAutoincrement = "NO";
-        defaultValue = parseDefaultValue(defaultValue);
-
-        String label = remarks;
-        String comment = null;
-        if(StringKit.isNotBlank(remarks)){
-            Pair<String,String> columnRemarks = ConnParseKit.parseNameAndComment(remarks);
-            label = columnRemarks.getLeft();
-            comment = columnRemarks.getRight();
-        }
-
-        field.setDefKey(colName);
-        field.setDefName(label);
-        field.setComment(comment);
-        field.setType(typeName);
-        field.setLen(columnSize);
-        if(decimalDigits<=0){
-            field.setScale(null);
-        }else{
-            field.setScale(decimalDigits);
-        }
-
-        field.setPrimaryKey(pkSet.contains(colName));
-        field.setNotNull(!"YES".equalsIgnoreCase(isNullable));
-        field.setAutoIncrement(!"NO".equalsIgnoreCase(isAutoincrement));
-        field.setDefaultValue(defaultValue);
-    }
 
 }
